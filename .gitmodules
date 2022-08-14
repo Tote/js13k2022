@@ -1,0 +1,3 @@
+[submodule "gloop"]
+	path = gloop
+	url = https://github.com/Tote/gloop.git
