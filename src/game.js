@@ -1,10 +1,11 @@
-import GameCanvas   from '../gloop/src/GameCanvas.js'
-import Graphics     from '../gloop/src/Graphics.js'
-import Gloop        from '../gloop/src/Gloop.js'
-import BrowserEvent from '../gloop/src/BrowserEvent.js'
-import Player       from './Items/Player.js'
-import Enemy        from './Items/Enemy.js'
-import Soul         from './Items/Soul.js'
+import GameCanvas       from '../gloop/src/GameCanvas.js'
+import Graphics         from '../gloop/src/Graphics.js'
+import Gloop            from '../gloop/src/Gloop.js'
+import GloopCollection  from '../gloop/src/GloopCollection.js'
+import BrowserEvent     from '../gloop/src/BrowserEvent.js'
+import Player           from './Items/Player.js'
+import Enemy            from './Items/Enemy.js'
+import Soul             from './Items/Soul.js'
 
 /*******************************************************************************
     OBJECT SETUP                                                                              
@@ -32,11 +33,12 @@ testEnemy.vx = 0
 testEnemy.vy = 1
 game.item(testEnemy)
 
-const soul = new Soul(player)
+const souls = new GloopCollection()
+const soul = new Soul()
+soul.stayAt({x:100, y:40})
+souls.add(soul)
 game.item(soul)
 
-const soul2 = new Soul(player)
-game.item(soul2)
 /*******************************************************************************
     CONTROLS                                                                              
 *******************************************************************************/
@@ -83,8 +85,12 @@ game.rule({
     }
 })
 game.rule({
-    when: () => testEnemy.distanceTo(soul) < 300,
-    then: () =>  soul.target = testEnemy
+    when: () => true,
+    then: () => souls.all( soul => {
+        if(soul.distanceTo(testEnemy) < 200){
+            soul.follow(testEnemy)
+        }
+    })
 })
 
 game.run()
