@@ -4,7 +4,7 @@ import Gloop        from '../gloop/src/Gloop.js'
 import BrowserEvent from '../gloop/src/BrowserEvent.js'
 import Player       from './Items/Player.js'
 import Enemy        from './Items/Enemy.js'
-import Soul from './Items/Soul.js'
+import Soul         from './Items/Soul.js'
 
 /*******************************************************************************
     OBJECT SETUP                                                                              
@@ -18,7 +18,7 @@ const playerStop  = new BrowserEvent('keyup')
 
 const player = new Player()
 player.x = canvas.width()/2 - 25
-player.y = canvas.height() - 60
+player.y = canvas.height() - 200
 player.w = 50
 player.h = 50
 game.item(player)
@@ -35,6 +35,8 @@ game.item(testEnemy)
 const soul = new Soul(player)
 game.item(soul)
 
+const soul2 = new Soul(player)
+game.item(soul2)
 /*******************************************************************************
     CONTROLS                                                                              
 *******************************************************************************/
@@ -79,6 +81,10 @@ game.rule({
         testEnemy.stop()
         console.log('game over')
     }
+})
+game.rule({
+    when: () => testEnemy.distanceTo(soul) < 300,
+    then: () =>  soul.target = testEnemy
 })
 
 game.run()
